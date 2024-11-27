@@ -21,6 +21,7 @@ server.listen(PORT, () => {
 
 // Store connected players
 let players = {};
+let playerAnswers = {}; // Key: socket.id, Value: answer index
 let currentQuestionIndex = 0;
 
 // Sample questions (for now, you can add more)
@@ -72,21 +73,15 @@ io.on('connection', (socket) => {
             players[socket.id].score += 1;
         }
 
-        // Broadcast the answer to the host
-        io.to('host').emit('player-answer', {
-            id: socket.id,
-            name: players[socket.id].name,
-            answer: question.answers[answerIndex].text,
-            correct: isCorrect
-        });
+        // Store the player's answer
+        playerAnswers[socket.id] = answerIndex;
 
-        // Send updated scores to the host
-        const playersData = Object.values(players).map(player => ({
-            name: player.name,
-            score: player.score
-        }));
-        io.to('host').emit('update-scores', playersData);
+        // Notify the host about the number of submitted answers
+        const totalPlayers = Object.keys(players).length;
+        const submittedAnswers = Object.keys(playerAnswers).length;
+        io.to('host').emit('update-submissions', { submittedAnswers, totalPlayers });
     });
+
 
 
     // Handle host joining
@@ -98,28 +93,56 @@ io.on('connection', (socket) => {
     // Handle broadcasting new question to players
     socket.on('new-question', () => {
         const question = questions[currentQuestionIndex];
+        console.log("server: new-question");
         io.emit('new-question', question);  // Broadcast the question to all players
-        io.to('host').emit('new-question', question);  // Send to host for display
     });
 
     // server.js
 
     socket.on('next-question', () => {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < questions.length) {
-            io.emit('new-question', questions[currentQuestionIndex]);
-        } else {
+        // If we are showing the breakdown, proceed to the scoreboard
+        if (socket.showingBreakdown) {
+            socket.showingBreakdown = false;
+    
             // Prepare players' scores
             const playersData = Object.values(players).map(player => ({
                 name: player.name,
                 score: player.score
             }));
-            console.log(playersData);
-            io.emit('quiz-finished');  // Inform players
-            // Send final scores to the host
-            io.to('host').emit('quiz-finished', playersData);
-            
+    
+            // Send updated scores to the host
+            io.to('host').emit('update-scores', playersData);
+    
+            // Check if there are more questions
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                // Reset player answers for the next question
+                playerAnswers = {};
+                io.to('host').emit('ready-next-question');
+            } else {
+                io.emit('quiz-finished');  // Inform players
+                io.to('host').emit('quiz-finished', playersData);
+            }
+        } else {
+            // First, send the breakdown of answers
+            const question = questions[currentQuestionIndex];
+            const answerCounts = question.answers.map(() => 0);
+    
+            // Count how many players chose each answer
+            Object.values(playerAnswers).forEach(answerIndex => {
+                answerCounts[answerIndex]++;
+            });
+    
+            // Send the breakdown to the host
+            io.to('host').emit('answer-breakdown', {
+                question: question.question,
+                answers: question.answers,
+                counts: answerCounts
+            });
+    
+            socket.showingBreakdown = true;
         }
     });
+    
 
 });
