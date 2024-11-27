@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Handle submitting answers
+
     socket.on('submit-answer', (answerIndex) => {
         const question = questions[currentQuestionIndex];
         const isCorrect = question.answers[answerIndex].correct;
@@ -79,7 +79,15 @@ io.on('connection', (socket) => {
             answer: question.answers[answerIndex].text,
             correct: isCorrect
         });
+
+        // Send updated scores to the host
+        const playersData = Object.values(players).map(player => ({
+            name: player.name,
+            score: player.score
+        }));
+        io.to('host').emit('update-scores', playersData);
     });
+
 
     // Handle host joining
     socket.on('host-join', () => {
@@ -94,13 +102,24 @@ io.on('connection', (socket) => {
         io.to('host').emit('new-question', question);  // Send to host for display
     });
 
-    // Handle next question
+    // server.js
+
     socket.on('next-question', () => {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
             io.emit('new-question', questions[currentQuestionIndex]);
         } else {
-            io.emit('quiz-finished');
+            // Prepare players' scores
+            const playersData = Object.values(players).map(player => ({
+                name: player.name,
+                score: player.score
+            }));
+            console.log(playersData);
+            io.emit('quiz-finished');  // Inform players
+            // Send final scores to the host
+            io.to('host').emit('quiz-finished', playersData);
+            
         }
     });
+
 });
