@@ -1,0 +1,136 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Arial, sans-serif';
+    background-color: #303036;
+    color: #fff;
+    text-align: center;
+}
+
+h1, h2 {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+button {
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+/* Host Styles */
+#game {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#question-container {
+    margin-top: 50px;
+}
+
+/* Bar Chart Styling */
+#breakdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 20px; /* Space between bars */
+    margin-top: 20px;
+}
+
+#breakdown-container .bar-container {
+    text-align: center;
+    position: relative;
+}
+
+#breakdown-container .bar {
+    width: 80px;
+    margin: 10px auto;
+    border-radius: 10px;
+    background-color: #95a5a6;
+    transition: height 0.3s ease;
+    position: relative;
+}
+
+#breakdown-container .bar span {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#breakdown-container .bar-label {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+/* Scoreboard Styles */
+#scoreboard {
+    margin-top: 30px;
+}
+
+#submission-info {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+#start-btn, #next-btn {
+    background-color: #ff9800;
+    color: #fff;
+}
+
+#start-btn:hover, #next-btn:hover {
+    background-color: #e68900;
+}
+
+/* Answer Button Styles */
+.answer-button {
+    width: 45%;
+    margin: 2%;
+    height: 150px;
+    font-size: 64px; /* Larger font size for shapes */
+    font-weight: bold;
+    color: #fff;
+    border-radius: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.answer-button:nth-child(2) {
+    background-color: #d9534f; /* Red */
+}
+
+.answer-button:nth-child(3) {
+    background-color: #5bc0de; /* Blue */
+}
+
+.answer-button:nth-child(4) {
+    background-color: #f0ad4e; /* Yellow */
+}
+
+.answer-button:nth-child(5) {
+    background-color: #5cb85c; /* Green */
+}
+
+.answer-button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+#finished-container h2 {
+    font-size: 36px;
+    margin-top: 50px;
+}
+
+#timer {
+    font-size: 24px;
+    margin-bottom: 20px;
+}

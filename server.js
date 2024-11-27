@@ -60,7 +60,14 @@ io.on('connection', (socket) => {
 
     socket.on('submit-answer', (answerIndex) => {
         const question = questions[currentQuestionIndex];
-        const isCorrect = question.answers[answerIndex].correct;
+        var isCorrect;
+        if(answerIndex != -1){
+            isCorrect = question.answers[answerIndex].correct;
+        }
+        else{
+            isCorrect = false;
+        }
+        
 
         // Update player score if correct
         if (isCorrect) {
@@ -123,7 +130,7 @@ io.on('connection', (socket) => {
     
             // Count how many players chose each answer
             Object.values(playerAnswers).forEach(answerIndex => {
-                answerCounts[answerIndex]++;
+                if(answerIndex != -1) answerCounts[answerIndex]++;
             });
     
             // Send the breakdown to the host
