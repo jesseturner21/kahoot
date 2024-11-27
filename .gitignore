@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Mac system files (optional)
+.DS_Store
+
+# npm package lock file (if you're not using npm, skip this)
+package-lock.json
+
+# Public folder if it contains build files (e.g., compiled assets, etc.)
+public/
+
+# Build files (e.g., if you're using build tools like Webpack, Parcel, etc.)
+dist/
+build/
