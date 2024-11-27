@@ -24,27 +24,21 @@ let players = {};
 let playerAnswers = {}; // Key: socket.id, Value: answer index
 let currentQuestionIndex = 0;
 
-// Sample questions (for now, you can add more)
-const questions = [
-    {
-        question: "What is 2 + 2?",
-        answers: [
-            { text: "4", correct: true },
-            { text: "22", correct: false },
-            { text: "5", correct: false },
-            { text: "2", correct: false }
-        ]
-    },
-    {
-        question: "What is the capital of France?",
-        answers: [
-            { text: "Berlin", correct: false },
-            { text: "Madrid", correct: false },
-            { text: "Paris", correct: true },
-            { text: "Rome", correct: false }
-        ]
-    }
-];
+const fs = require('fs');
+const path = require('path');
+
+// Load questions from JSON file
+let questions = [];
+try {
+    const questionsPath = path.join(__dirname, './public/data/questions.json');
+    const questionsData = fs.readFileSync(questionsPath, 'utf8');
+    questions = JSON.parse(questionsData);
+    console.log('Questions loaded successfully.');
+} catch (error) {
+    console.error('Error loading questions:', error.message);
+    process.exit(1); // Exit the app if questions cannot be loaded
+}
+
 
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
@@ -93,7 +87,6 @@ io.on('connection', (socket) => {
     // Handle broadcasting new question to players
     socket.on('new-question', () => {
         const question = questions[currentQuestionIndex];
-        console.log("server: new-question");
         io.emit('new-question', question);  // Broadcast the question to all players
     });
 
