@@ -9,11 +9,13 @@ socket.emit('host-join');
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
 const questionContainer = document.getElementById('question-container');
+const gameTitle = document.getElementById('game-title');
 const finishedContainer = document.getElementById('finished-container');
 const submissionInfo = document.getElementById('submission-info');
 
 startButton.addEventListener('click', () => {
     startButton.style.display = 'none';
+    gameTitle.style.display = 'none';
     socket.emit('new-question');  // Ask the server to emit the first question
 });
 
@@ -44,7 +46,6 @@ socket.on('quiz-finished', (playersData) => {
 
     // Display the final scores
     finishedContainer.style.display = 'block';
-    finishedContainer.innerHTML = '<h2>Final Scores</h2>';
     updateScores(playersData);
 });
 
@@ -64,13 +65,13 @@ socket.on('update-scores', (playersData) => {
 
 function updateScores(playersData) {
     const scoreboard = document.getElementById('scoreboard');
-    scoreboard.innerHTML = '<h2>Scores</h2>';
+    scoreboard.innerHTML = '<h1>Scores</h1>';
 
     // Sort players by score in descending order
     playersData.sort((a, b) => b.score - a.score);
 
     playersData.forEach(player => {
-        const p = document.createElement('p');
+        const p = document.createElement('h3');
         p.innerText = `${player.name}: ${player.score}`;
         scoreboard.appendChild(p);
     });

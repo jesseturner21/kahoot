@@ -1,26 +1,28 @@
-<!-- public/player.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Player</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1 id="quiz-title">Join Quiz</h1>
-    <div id="join-container">
-        <input type="text" id="name-input" placeholder="Enter your name">
-        <button id="join-btn">Join Game</button>
+    <div id="join-container" class="centered-container">
+        <h1 id="quiz-title">Welcome to the Quiz!</h1>
+        <input type="text" id="name-input" placeholder="Enter your name" class="name-input">
+        <button id="join-btn" class="join-btn">Join Game</button>
     </div>
-    <div id="waiting-room" style="display:none;">
-        <p>Waiting for the game to start...</p>
+    <div id="waiting-room" class="centered-container" style="display:none;">
+        <h2>Waiting for the game to start...</h2>
+        <div class="loader"></div>
     </div>
     <div id="question-container" style="display:none;">
         <!-- Answer buttons will be displayed here -->
     </div>
     <!-- Finished Screen -->
-    <div id="finished-container" style="display: none;">
+    <div id="finished-container" class="centered-container" style="display: none;">
         <h2>Finished!</h2>
+        <p>Thank you for playing!</p>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="player.js"></script>

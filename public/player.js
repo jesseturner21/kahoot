@@ -73,7 +73,7 @@ function showQuestion(question) {
         button.addEventListener('click', () => {
             clearInterval(timerInterval);
             socket.emit('submit-answer', index);
-            questionContainer.innerHTML = '<p>Answer submitted. Waiting for next question...</p>';
+            questionContainer.innerHTML = '<h2>Answer submitted! Waiting for next question...</h2>';
         });
         questionContainer.appendChild(button);
     });
