@@ -158,7 +158,7 @@ button {
     width: 45%;
     margin: 2%;
     height: 150px;
-    font-size: 64px; /* Larger font size for shapes */
+    font-size: 30px; /* Larger font size for shapes */
     font-weight: bold;
     color: #fff;
     border-radius: 10px;
@@ -195,4 +195,25 @@ button {
 #timer {
     font-size: 24px;
     margin-bottom: 20px;
+}
+
+.player-name {
+    width: 150px;
+    height: 50px;
+    margin: 10px; /* Space between elements */
+    background-color: #f0f0f0; /* Light gray background */
+    display: flex;
+    align-items: center; /* Vertically center text */
+    justify-content: center; /* Horizontally center text */
+    border-radius: 5px; /* Rounded corners (optional) */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    font-family: Arial, sans-serif; /* Font style (optional) */
+    font-size: 14px; /* Font size (optional) */
+    color: #333; /* Text color (optional) */
+}
+#player-names {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; /* Vertically center text */
+    justify-content: space-evenly; /* Horizontally center text */
 }

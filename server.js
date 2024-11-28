@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
     // Handle player joining
     socket.on('player-join', (name) => {
         players[socket.id] = { name: name, score: 0 };
+        io.to('host').emit('add-player', name);
         console.log(`${name} joined the game.`);
     });
 
@@ -97,52 +98,78 @@ io.on('connection', (socket) => {
         io.emit('new-question', question);  // Broadcast the question to all players
     });
 
-    // server.js
+    // State tracking for the host
+    let hostState = 'submissions'; // Possible states: 'submissions', 'scores', 'next-question'
 
+    // Handle host button click
     socket.on('next-question', () => {
-        // If we are showing the breakdown, proceed to the scoreboard
-        if (socket.showingBreakdown) {
-            socket.showingBreakdown = false;
-    
-            // Prepare players' scores
+        if (hostState === 'submissions') {
+            showAnswerBreakdown();
+        } else if (hostState === 'scores') {
+            showScoreboard();
+        } else if (hostState === 'next-question') {
+            sendNextQuestion();
+        }
+    });
+
+    // Function to show the breakdown of answers
+    function showAnswerBreakdown() {
+        const question = questions[currentQuestionIndex];
+        const answerCounts = question.answers.map(() => 0);
+
+        // Count how many players chose each answer
+        Object.values(playerAnswers).forEach(answerIndex => {
+            if (answerIndex !== -1) answerCounts[answerIndex]++;
+        });
+
+        // Send the breakdown to the host
+        io.to('host').emit('answer-breakdown', {
+            question: question.question,
+            answers: question.answers,
+            counts: answerCounts
+        });
+
+        // Update host state
+        hostState = 'scores';
+    }
+
+    // Function to show the scoreboard
+    function showScoreboard() {
+        // Prepare players' scores
+        const playersData = Object.values(players).map(player => ({
+            name: player.name,
+            score: player.score
+        }));
+
+        // Send updated scores to the host
+        io.to('host').emit('update-scores', playersData);
+
+        // Update host state
+        hostState = 'next-question';
+    }
+
+    // Function to send the next question
+    function sendNextQuestion() {
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            // Reset player answers for the next question
+            playerAnswers = {};
+
+            const question = questions[currentQuestionIndex];
+            io.emit('new-question', question); // Broadcast the question to all players
+            io.to('host').emit('ready-next-question');
+
+            // Update host state
+            hostState = 'submissions';
+        } else {
+            // Quiz is finished
             const playersData = Object.values(players).map(player => ({
                 name: player.name,
                 score: player.score
             }));
-    
-            // Send updated scores to the host
-            io.to('host').emit('update-scores', playersData);
-    
-            // Check if there are more questions
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                // Reset player answers for the next question
-                playerAnswers = {};
-                io.to('host').emit('ready-next-question');
-            } else {
-                io.emit('quiz-finished');  // Inform players
-                io.to('host').emit('quiz-finished', playersData);
-            }
-        } else {
-            // First, send the breakdown of answers
-            const question = questions[currentQuestionIndex];
-            const answerCounts = question.answers.map(() => 0);
-    
-            // Count how many players chose each answer
-            Object.values(playerAnswers).forEach(answerIndex => {
-                if(answerIndex != -1) answerCounts[answerIndex]++;
-            });
-    
-            // Send the breakdown to the host
-            io.to('host').emit('answer-breakdown', {
-                question: question.question,
-                answers: question.answers,
-                counts: answerCounts
-            });
-    
-            socket.showingBreakdown = true;
+            io.emit('quiz-finished'); // Inform players
+            io.to('host').emit('quiz-finished', playersData);
         }
-    });
-    
-
+    }
 });

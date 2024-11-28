@@ -39,7 +39,14 @@ socket.on('quiz-finished', () => {
     finishedContainer.style.display = 'block';
 });
 
+let timerInterval; // Define the interval globally to ensure proper cleanup
+
 function showQuestion(question) {
+    // Clear any existing intervals before setting up a new one
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+
     questionContainer.innerHTML = '';
 
     // Display the timer
@@ -49,16 +56,18 @@ function showQuestion(question) {
     timerElement.style.marginBottom = '20px';
     questionContainer.appendChild(timerElement);
 
-    let timeLeft = 30; // 15 seconds for each question
+    let timeLeft = 5; // 15 seconds for each question
     timerElement.innerText = `Time left: ${timeLeft}s`;
 
-    const timerInterval = setInterval(() => {
+    timerInterval = setInterval(() => {
         timeLeft--;
         timerElement.innerText = `Time left: ${timeLeft}s`;
+        console.log("timeleft = ", timeLeft);
 
         if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            questionContainer.innerHTML = '<p>Time is up! Waiting for next question...</p>';
+            clearInterval(timerInterval); // Ensure timer stops
+            timerInterval = null; // Reset the interval variable
+            questionContainer.innerHTML = '<h2>Time is up! Waiting for next question...</h2>';
             socket.emit('submit-answer', -1); // -1 indicates no answer
         }
     }, 1000);
@@ -71,7 +80,10 @@ function showQuestion(question) {
         button.innerText = shapes[index];
         button.classList.add('answer-button');
         button.addEventListener('click', () => {
-            clearInterval(timerInterval);
+            if (timerInterval) {
+                clearInterval(timerInterval); // Stop the timer when an answer is submitted
+                timerInterval = null; // Reset the interval variable
+            }
             socket.emit('submit-answer', index);
             questionContainer.innerHTML = '<h2>Answer submitted! Waiting for next question...</h2>';
         });
@@ -79,3 +91,13 @@ function showQuestion(question) {
     });
 }
 
+// Handle the 'quiz-finished' event
+socket.on('quiz-finished', () => {
+    // Clear any existing intervals when the quiz ends
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    questionContainer.style.display = 'none';
+    finishedContainer.style.display = 'block';
+});

@@ -12,6 +12,8 @@ const questionContainer = document.getElementById('question-container');
 const gameTitle = document.getElementById('game-title');
 const finishedContainer = document.getElementById('finished-container');
 const submissionInfo = document.getElementById('submission-info');
+const scoreboard = document.getElementById('scoreboard');
+const playerNames = document.getElementById('player-names');
 
 startButton.addEventListener('click', () => {
     startButton.style.display = 'none';
@@ -25,6 +27,9 @@ nextButton.addEventListener('click', () => {
 
 // Receive new question from the server
 socket.on('new-question', (question) => {
+    scoreboard.style.display = 'none';
+    playerNames.style.display = 'none';
+    questionContainer.style.display = 'block';
     questionContainer.innerHTML = `<h2>${question.question}</h2>`;
     question.answers.forEach((answer, index) => {
         const button = document.createElement('button');
@@ -37,7 +42,14 @@ socket.on('new-question', (question) => {
     nextButton.style.display = 'block';
     console.log("recieved question in host");
 });
+socket.on('add-player', (playerName) => {
+    
+    const div = document.createElement('div');
+    div.innerText = `${playerName}`;
+    div.className = "player-name";
 
+    playerNames.appendChild(div);
+});
 socket.on('quiz-finished', (playersData) => {
     // Hide quiz elements
     questionContainer.style.display = 'none';
@@ -64,7 +76,9 @@ socket.on('update-scores', (playersData) => {
 
 
 function updateScores(playersData) {
-    const scoreboard = document.getElementById('scoreboard');
+    questionContainer.style.display = 'none';
+    scoreboard.style.display = 'block';
+
     scoreboard.innerHTML = '<h1>Scores</h1>';
 
     // Sort players by score in descending order
@@ -78,11 +92,12 @@ function updateScores(playersData) {
 }
 // Display the number of submitted answers
 socket.on('update-submissions', ({ submittedAnswers, totalPlayers }) => {
-    const submissionInfo = document.getElementById('submission-info');
-    submissionInfo.innerText = `Submitted Answers: ${submittedAnswers}/${totalPlayers}`;
+    submissionInfo.style.display = 'block';
+    submissionInfo.innerText = `${submittedAnswers}`;
 });
 
 socket.on('answer-breakdown', (data) => {
+    submissionInfo.style.display = 'none';
     // Clear the question container and add the question text
     questionContainer.innerHTML = `<h2>${data.question}</h2>`;
 

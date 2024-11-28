@@ -1,20 +1,137 @@
 [
     {
-        "question": "What is 2 + 2?",
+        "question": "What is the supreme law of the land?",
         "answers": [
-            { "text": "4", "correct": true },
-            { "text": "22", "correct": false },
-            { "text": "5", "correct": false },
-            { "text": "2", "correct": false }
+            { "text": "Federal Laws", "correct": false },
+            { "text": "The Constitution", "correct": true },
+            { "text": "The Bill of Rights", "correct": false },
+            { "text": "The Declaration of Independence", "correct": false }
         ]
     },
     {
-        "question": "What is the capital of France?",
+        "question": "What do we call the first ten amendments to the Constitution?",
         "answers": [
-            { "text": "Berlin", "correct": false },
-            { "text": "Madrid", "correct": false },
-            { "text": "Paris", "correct": true },
-            { "text": "Rome", "correct": false }
+            { "text": "The Bill of Rights", "correct": true },
+            { "text": "The Declaration of Independence", "correct": false },
+            { "text": "The Articles of Confederation", "correct": false },
+            { "text": "The Preamble", "correct": false }
+        ]
+    },
+    {
+        "question": "What is one right or freedom from the First Amendment?",
+        "answers": [
+            { "text": "Right to vote", "correct": false },
+            { "text": "Freedom of speech", "correct": true },
+            { "text": "Right to bear arms", "correct": false },
+            { "text": "Right to privacy", "correct": false }
+        ]
+    },
+    {
+        "question": "How many U.S. Senators are there?",
+        "answers": [
+            { "text": "200", "correct": false },
+            { "text": "435", "correct": false },
+            { "text": "50", "correct": false },
+            { "text": "100", "correct": true }
+        ]
+    },
+    {
+        "question": "What are the two parts of the U.S. Congress?",
+        "answers": [
+            { "text": "The Senate and the House of Representatives", "correct": true },
+            { "text": "The Cabinet and the Senate", "correct": false },
+            { "text": "The House of Representatives and the President", "correct": false },
+            { "text": "The Supreme Court and the Senate", "correct": false }
+        ]
+    },
+    {
+        "question": "What is the highest court in the United States?",
+        "answers": [
+            { "text": "The Supreme Court", "correct": true },
+            { "text": "The Circuit Court", "correct": false },
+            { "text": "The Federal Court", "correct": false },
+            { "text": "The Court of Appeals", "correct": false }
+        ]
+    },
+    {
+        "question": "Who is in charge of the executive branch?",
+        "answers": [
+            { "text": "The President", "correct": true },
+            { "text": "The Vice President", "correct": false },
+            { "text": "The Chief Justice", "correct": false },
+            { "text": "The Speaker of the House", "correct": false }
+        ]
+    },
+    {
+        "question": "How many justices are on the Supreme Court?",
+        "answers": [
+            { "text": "Nine", "correct": true },
+            { "text": "Twelve", "correct": false },
+            { "text": "Ten", "correct": false },
+            { "text": "Seven", "correct": false }
+        ]
+    },
+    {
+        "question": "Who is the Commander in Chief of the military?",
+        "answers": [
+            { "text": "The Chairman of the Joint Chiefs of Staff", "correct": false },
+            { "text": "The President", "correct": true },
+            { "text": "The Secretary of Defense", "correct": false },
+            { "text": "The Vice President", "correct": false }
+        ]
+    },
+    {
+        "question": "What is the capital of the United States?",
+        "answers": [
+            { "text": "Philadelphia", "correct": false },
+            { "text": "Washington, D.C.", "correct": true },
+            { "text": "Boston", "correct": false },
+            { "text": "New York City", "correct": false }
+        ]
+    },
+    {
+        "question": "What is the name of the current President of the United States?",
+        "answers": [
+            { "text": "Kamala Harris", "correct": false },
+            { "text": "Donald Trump", "correct": false },
+            { "text": "Barack Obama", "correct": false },
+            { "text": "Joe Biden", "correct": true }
+        ]
+    },
+    {
+        "question": "What movement tried to end racial discrimination in the United States?",
+        "answers": [
+            { "text": "The Temperance Movement", "correct": false },
+            { "text": "The Abolitionist Movement", "correct": false },
+            { "text": "The Civil Rights Movement", "correct": true },
+            { "text": "The Suffrage Movement", "correct": false }
+        ]
+    },
+    {
+        "question": "Who wrote the Declaration of Independence?",
+        "answers": [
+            { "text": "John Adams", "correct": false },
+            { "text": "George Washington", "correct": false },
+            { "text": "Benjamin Franklin", "correct": false },
+            { "text": "Thomas Jefferson", "correct": true }
+        ]
+    },
+    {
+        "question": "What is one responsibility that is only for United States citizens?",
+        "answers": [
+            { "text": "Serving in the military", "correct": false },
+            { "text": "Serving on a jury", "correct": true },
+            { "text": "Paying taxes", "correct": false },
+            { "text": "Obeying the law", "correct": false }
+        ]
+    },
+    {
+        "question": "What are two rights in the Declaration of Independence?",
+        "answers": [
+            { "text": "Liberty and Property", "correct": false },
+            { "text": "Life and Liberty", "correct": true },
+            { "text": "Pursuit of Property and Happiness", "correct": false },
+            { "text": "Life and Education", "correct": false }
         ]
     }
 ]
